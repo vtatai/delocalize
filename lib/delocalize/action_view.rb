@@ -32,6 +32,10 @@ ActionView::Helpers::InstanceTag.class_eval do
     case type
     when :number
       options[:value] = number_with_precision(value)
+    when :currency
+      options[:value] = number_to_currency(value)
+    when :percentage
+      options[:value] = number_to_percentage(value)
     when :date, :time
       options[:value] = value ? I18n.l(value, :format => options.delete(:format) || :default) : nil
     end

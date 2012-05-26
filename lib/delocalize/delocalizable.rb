@@ -32,7 +32,7 @@ module Delocalize
         delocalize_conversions[field.to_sym]
       end
 
-    private
+      private
 
       def define_delocalize_attr_writer(field)
         writer_method = "#{field}="
@@ -50,6 +50,10 @@ module Delocalize
               when :date, :time
                 value = LocalizedDateTimeParser.parse(value, type.to_s.classify.constantize) rescue value
                 value = value.in_time_zone if value.acts_like?(:time)
+              when :currency
+                value = LocalizedCurrencyParser.parse(value) rescue value
+              when :percentage
+                value = LocalizedPercentageParser.parse(value) rescue value
               end
             end
 
@@ -61,18 +65,16 @@ module Delocalize
     end
 
     # The instance methods are just here for convenience. They all delegate to their class.
-    module InstanceMethods
-      def delocalizing?
-        self.class.delocalizing?
-      end
+    def delocalizing?
+      self.class.delocalizing?
+    end
 
-      def delocalizes?(field)
-        self.class.delocalizes?(field)
-      end
+    def delocalizes?(field)
+      self.class.delocalizes?(field)
+    end
 
-      def delocalize_type_for(field)
-        self.class.delocalize_type_for(field)
-      end
+    def delocalize_type_for(field)
+      self.class.delocalize_type_for(field)
     end
   end
 end
