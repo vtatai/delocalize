@@ -5,7 +5,8 @@ module Delocalize
       def parse(value)
         if value.is_a?(String)
           delimiter = I18n.t(:'number.percentage.format.delimiter')
-          value = value.gsub('%', '').strip.gsub(delimiter, '')
+          separator = I18n.t(:'number.percentage.format.separator')
+          value = value.gsub('%', '').strip.gsub(delimiter, '').gsub(separator, '.')
         end
         value
       end
