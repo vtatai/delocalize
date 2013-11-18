@@ -11,7 +11,11 @@ class DelocalizeActiveRecordTest < ActiveRecord::TestCase
     @product = Product.new
   end
 
+<<<<<<< HEAD
+  teardown do
+=======
   def teardown
+>>>>>>> wanchic/master
     Timecop.return
   end
 
@@ -341,7 +345,11 @@ class DelocalizeActionViewTest < ActionView::TestCase
   end
 
   test "formats field with default value correctly" do
+<<<<<<< HEAD
+    assert_dom_equal '<input id="product_some_value_with_default" name="product[some_value_with_default]" size="30" type="text" value="13,37" />',
+=======
     assert_dom_equal '<input id="product_some_value_with_default" name="product[some_value_with_default]" type="text" value="0,00" />',
+>>>>>>> wanchic/master
       text_field(:product, :some_value_with_default)
   end
 end

@@ -1,3 +1,5 @@
+require 'date'
+
 # TODO:
 #   * AM/PM calculation
 #   * proper documentation (comments)
@@ -53,9 +55,15 @@ module Delocalize
       end
 
       def translate_month_and_day_names(datetime)
-        translated = I18n.t([:month_names, :abbr_month_names, :day_names, :abbr_day_names], :scope => :date).flatten.compact
+        # Note: This should be a bulk lookup but due to a bug in i18n it doesn't work properly with fallbacks.
+        # See https://github.com/svenfuchs/i18n/issues/104.
+        # TODO Make it a bulk lookup again at some point in the future when the bug is fixed in i18n.
+        translated = [:month_names, :abbr_month_names, :day_names, :abbr_day_names].map do |key|
+          I18n.t(key, :scope => :date)
+        end.flatten.compact
+
         original = (Date::MONTHNAMES + Date::ABBR_MONTHNAMES + Date::DAYNAMES + Date::ABBR_DAYNAMES).compact
-        translated.each_with_index { |name, i| datetime.gsub!(name, original[i]) }
+        translated.each_with_index { |name, i| datetime.gsub!(/\b#{name}\b/, original[i]) }
       end
 
       def input_formats(type)
