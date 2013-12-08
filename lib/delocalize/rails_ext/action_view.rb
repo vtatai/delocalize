@@ -6,7 +6,7 @@ else
   # TODO: also override other methods like to_check_box_tag since they might contain numeric values?
   # ActionView needs some patching too
 
-  ActionView::Helpers::InstanceTag.class_eval do
+  ActionView::Helpers::ActiveModelInstanceTag.class_eval do
     include ActionView::Helpers::NumberHelper
 
     alias original_to_input_field_tag to_input_field_tag
