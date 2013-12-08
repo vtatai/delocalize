@@ -1,6 +1,6 @@
 require 'action_view'
 
-ActionView::Helpers::InstanceTag.class_eval do
+ActionView::Helpers::ActiveModelInstanceTag.class_eval do
   include ActionView::Helpers::NumberHelper
 
   alias original_to_input_field_tag to_input_field_tag
