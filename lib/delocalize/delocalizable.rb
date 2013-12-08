@@ -4,13 +4,6 @@ module Delocalize
   module Delocalizable
     extend ActiveSupport::Concern
 
-    included do
-      class_attribute :delocalizable_fields
-      class_attribute :delocalize_conversions
-      self.delocalize_conversions = {}
-      self.delocalizable_fields = []
-    end
-
     module ClassMethods
       def delocalize(conversions = {})
         conversions.each do |field, type|
@@ -32,7 +25,23 @@ module Delocalize
         delocalize_conversions[field.to_sym]
       end
 
-      private
+      def delocalizable_fields
+        @delocalizable_fields ||= if superclass.respond_to?(:delocalizable_fields)
+          superclass.delocalizable_fields.dup
+        else
+          []
+        end
+      end
+
+      def delocalize_conversions
+        @delocalize_conversions ||= if superclass.respond_to?(:delocalize_conversions)
+          superclass.delocalize_conversions.dup
+        else
+          {}
+        end
+      end
+
+    private
 
       def define_delocalize_attr_writer(field)
         writer_method = "#{field}="
